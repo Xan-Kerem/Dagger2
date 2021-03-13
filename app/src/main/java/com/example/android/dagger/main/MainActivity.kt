@@ -18,6 +18,7 @@ package com.example.android.dagger.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.android.dagger.MyApplication
@@ -26,10 +27,18 @@ import com.example.android.dagger.databinding.ActivityMainBinding
 import com.example.android.dagger.login.LoginActivity
 import com.example.android.dagger.registration.RegistrationActivity
 import com.example.android.dagger.settings.SettingsActivity
+import com.example.android.dagger.user.UserManager
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mainViewModel: MainViewModel
+    // @Inject annotated fields will be provided by Dagger
+    @Inject
+    lateinit var mainViewModel: MainViewModel
+
+    @Inject
+    lateinit var userManager: UserManager
+
     private lateinit var binding: ActivityMainBinding
 
     /**
@@ -38,9 +47,12 @@ class MainActivity : AppCompatActivity() {
      * else carry on with MainActivity
      */
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        (application as MyApplication).daggerAppComponent.inject(this)
+
         super.onCreate(savedInstanceState)
 
-        val userManager = (application as MyApplication).userManager
+
         if (!userManager.isUserLoggedIn()) {
             if (!userManager.isUserRegistered()) {
                 startActivity(Intent(this, RegistrationActivity::class.java))
@@ -53,7 +65,6 @@ class MainActivity : AppCompatActivity() {
             binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
 
-            mainViewModel = MainViewModel(userManager.userDataRepository!!)
             setupViews()
         }
     }

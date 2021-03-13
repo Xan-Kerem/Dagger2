@@ -16,6 +16,7 @@
 
 package com.example.android.dagger.registration.termsandconditions
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,11 +27,19 @@ import com.example.android.dagger.R
 import com.example.android.dagger.databinding.FragmentTermsAndConditionsBinding
 import com.example.android.dagger.registration.RegistrationActivity
 import com.example.android.dagger.registration.RegistrationViewModel
+import javax.inject.Inject
 
 class TermsAndConditionsFragment : Fragment() {
 
-    private lateinit var registrationViewModel: RegistrationViewModel
+    @Inject
+    lateinit var registrationViewModel: RegistrationViewModel
     private lateinit var binding: FragmentTermsAndConditionsBinding
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as RegistrationActivity).registrationComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +54,7 @@ class TermsAndConditionsFragment : Fragment() {
         )
 
 
-        registrationViewModel = (activity as RegistrationActivity).registrationViewModel
+
 
         binding.next.setOnClickListener {
             registrationViewModel.acceptTCs()
