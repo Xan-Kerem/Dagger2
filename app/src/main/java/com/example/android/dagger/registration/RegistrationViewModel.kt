@@ -22,7 +22,7 @@ import com.example.android.dagger.user.UserManager
  * RegistrationViewModel is the ViewModel that the Registration flow ([RegistrationActivity]
  * and fragments) uses to keep user's input data.
  */
-class RegistrationViewModel(val userManager: UserManager) {
+class RegistrationViewModel (val userManager: UserManager) {
 
     private var username: String? = null
     private var password: String? = null

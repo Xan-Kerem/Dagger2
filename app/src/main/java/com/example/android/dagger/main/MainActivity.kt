@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-//            setContentView(R.layout.activity_main)
+
 
             mainViewModel = MainViewModel(userManager.userDataRepository!!)
             setupViews()
