@@ -18,7 +18,6 @@ package com.example.android.dagger.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.android.dagger.MyApplication
@@ -27,7 +26,6 @@ import com.example.android.dagger.databinding.ActivityMainBinding
 import com.example.android.dagger.login.LoginActivity
 import com.example.android.dagger.registration.RegistrationActivity
 import com.example.android.dagger.settings.SettingsActivity
-import com.example.android.dagger.user.UserManager
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -36,8 +34,6 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var mainViewModel: MainViewModel
 
-    @Inject
-    lateinit var userManager: UserManager
 
     private lateinit var binding: ActivityMainBinding
 
@@ -48,10 +44,10 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        (application as MyApplication).daggerAppComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
+
+        val userManager = (application as MyApplication).daggerAppComponent.userManager()
 
         if (!userManager.isUserLoggedIn()) {
             if (!userManager.isUserRegistered()) {
@@ -62,8 +58,12 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         } else {
-            binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+            // If the MainActivity needs to be displayed, we get the UserComponent
+            // from the application graph and gets this Activity injected
+            userManager.userComponent!!.inject(this)
+
+            binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
             setupViews()
         }
