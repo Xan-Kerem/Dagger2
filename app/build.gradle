@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-   compileSdkVersion 30
+    compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
 
@@ -69,5 +69,5 @@ dependencies {
     def dagger_version = "2.33"
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
- 
+
 }
